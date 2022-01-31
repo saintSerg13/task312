@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import javassist.NotFoundException;
 import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface UserService {
     void edit(User user);
 
     User getById(long id);
+
+    User getByName(String name) throws NotFoundException;
+
 }

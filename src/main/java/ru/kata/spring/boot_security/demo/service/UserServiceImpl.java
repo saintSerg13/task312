@@ -1,50 +1,71 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.dao.UserDAO;
-
-
 import java.util.List;
+import java.util.Optional;
 
-@Component
-@Transactional
+@Service
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
+    private final UserRepository userRepository;
 
     @Autowired
-    public void setUser(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Bean
+    private BCryptPasswordEncoder bCrypt() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
+        return userRepository.findAll();
     }
 
     @Override
     public void save(User user) {
-        userDAO.save(user);
+        user.setPassword(bCrypt().encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Override
     public void delete(User user) {
-        userDAO.delete(user);
+        userRepository.delete(user);
     }
 
     @Override
     public void edit(User user) {
-        userDAO.edit(user);
+        user.setPassword(bCrypt().encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Override
     public User getById(long id) {
-        return userDAO.getById(id);
+        User user = null;
+        Optional<User> opt = userRepository.findById(id);
+        if (opt.isPresent()) {
+            user = opt.get();
+        }
+        return user;
     }
+
+    @Override
+    public User getByName(String name) throws NotFoundException {
+        User user = userRepository.findByUsername(name);
+        if (user == null) {
+            throw new NotFoundException(name);
+        }
+        return user;
+    }
+
 }
+
