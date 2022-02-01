@@ -2,11 +2,12 @@ package ru.kata.spring.boot_security.demo.model;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.Transient;
+
 import javax.persistence.*;
 import java.util.Set;
-/**
- * C @Data падает с stackoverflow
- */
+
+
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor
@@ -15,10 +16,13 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     @Column(name = "role")
+
     private String name;
     @ManyToMany(mappedBy = "roles")
+
     private Set<User> users;
 
     @Override
