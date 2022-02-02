@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -22,7 +23,7 @@
             <td><a th:href="@{/user/delete/{id}(id=${user.id})}">Delete</a></td>
         </tr>
     </table>
-    <a th:href="@{/user}"></a>
+    <a th:href="@{/user}">user</a>
     <br/>
     <a th:href="@{/logout}">Logout</a>
 </div>
