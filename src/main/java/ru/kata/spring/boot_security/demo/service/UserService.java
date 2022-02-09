@@ -18,4 +18,6 @@ public interface UserService {
 
     User getByName(String name) throws NotFoundException;
 
+    User getByEmail(String email) throws NotFoundException;
+
 }

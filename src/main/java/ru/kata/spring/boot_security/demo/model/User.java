@@ -17,21 +17,24 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @NonNull
     @Column(name = "username", unique = true)
     private String username;
-
+    @NonNull
+    @Column(name = "lastname")
+    private String lastname;
     @NonNull
     @Column(name = "password")
     private String password;
-
+    @NonNull
+    @Column(name = "age")
+    private byte age;
     @NonNull
     @Column(name = "email")
     private String email;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
 
     @Override
     public String getUsername() {
